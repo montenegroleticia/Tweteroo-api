@@ -1,4 +1,4 @@
-import express from "express";
+import express, { request, response } from "express";
 import cors from "cors";
 
 const app = express();
@@ -53,12 +53,36 @@ app.post("/tweets", (request, response) => {
 });
 
 app.get("/tweets", (request, response) => {
-  const tweetsWithAvatars = tweets.map((t) => {
+  const page = request.query;
+
+  if (page && page < 1) {
+    return response.status(400).send("Informe uma página válida!");
+  }
+
+  const lastTenTweets = tweets.slice(-10).reverse();
+
+  const tweetsWithAvatars = lastTenTweets.map((t) => {
     const { username, tweet } = t;
 
     const findAvatar = user.find((a) => a.username === t.username);
     const avatar = findAvatar ? findAvatar.avatar : null;
 
+    return { username, avatar, tweet };
+  });
+
+  response.send(tweetsWithAvatars);
+});
+
+app.get("/tweets/:username", (request, response) => {
+  const { username } = request.params;
+
+  const userTweets = tweets.filter((t) => t.username === username);
+
+  const tweetsWithAvatars = userTweets.map((t) => {
+    const { username, tweet } = t;
+
+    const findAvatar = user.find((a) => a.username === t.username);
+    const avatar = findAvatar ? findAvatar.avatar : null;
     return { username, avatar, tweet };
   });
 
