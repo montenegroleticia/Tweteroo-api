@@ -18,7 +18,7 @@ const tweets = [];
 app.post("/sign-up", (request, response) => {
   const { username, avatar } = request.body;
 
-  if (!username || !avatar) {
+  if (typeof username != 'string' || typeof avatar != 'string' || !username || !avatar) {
     response.status(422).send("Todos os campos são obrigatórios!");
     return
   }
@@ -40,7 +40,7 @@ app.post("/tweets", (request, response) => {
     return
   }
 
-  if (!username || !tweet) {
+  if (typeof username != 'string' || typeof tweet != 'string' || !username || !tweet) {
     response.status(422).send("Todos os campos são obrigatórios");
     return
   }
