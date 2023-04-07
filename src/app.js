@@ -82,10 +82,10 @@ app.get("/tweets", (request, response) => {
   response.send(tweetsWithAvatars);
 });
 
-app.get("/tweets/:username", (request, response) => {
-  const { username } = request.params;
+app.get("/tweets/:USERNAME", (request, response) => {
+  const { USERNAME } = request.params;
 
-  const userTweets = tweets.filter((t) => t.username === username);
+  const userTweets = tweets.filter((t) => t.username === USERNAME);
 
   const tweetsWithAvatars = userTweets.map((t) => {
     const { username, tweet } = t;
