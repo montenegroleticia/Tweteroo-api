@@ -6,13 +6,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const profile = [
-  {
-    username: "bobesponja",
-    avatar:
-      "https://cdn.shopify.com/s/files/1/0150/0643/3380/files/Screen_Shot_2019-07-01_at_11.35.42_AM_370x230@2x.png",
-  },
-];
+const profile = [];
 const tweets = [];
 
 app.post("/sign-up", (request, response) => {
@@ -36,9 +30,11 @@ app.post("/sign-up", (request, response) => {
 
 app.post("/tweets", (request, response) => {
   const { user } = request.headers;
-  const { tweet } = request.body;
+  const { username, tweet } = request.body;
 
-  const findUsername = profile.find((name) => name.username === user);
+  const findUsername = profile.find(
+    (name) => name.username === user || name.username === username
+  );
 
   if (!findUsername) {
     response.status(401).send("UNAUTHORIZED");
@@ -50,7 +46,7 @@ app.post("/tweets", (request, response) => {
     return;
   }
 
-  const newTweet = { user, tweet };
+  const newTweet = { username, tweet };
 
   tweets.push(newTweet);
   response.status(201).send("OK");
