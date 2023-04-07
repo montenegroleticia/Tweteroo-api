@@ -1,4 +1,4 @@
-import express, { request, response } from "express";
+import express from "express";
 import cors from "cors";
 
 const app = express();
@@ -54,7 +54,17 @@ app.post("/tweets", (request, response) => {
 });
 
 app.get("/tweets", (request, response) => {
-  const lastTenTweets = tweets.slice(-10).reverse();
+  const { page } = request.query;
+  const pageSize = 10;
+
+  if (page && page < 1) {
+    return response.status(400).send("Informe uma página válida!");
+  }
+
+  const startIndex = page ? (page - 1) * pageSize : 0;
+  const endIndex = startIndex + pageSize;
+
+  const lastTenTweets = tweets.slice(startIndex, endIndex).reverse();
 
   const tweetsWithAvatars = lastTenTweets.map((t) => {
     const { username, tweet } = t;
