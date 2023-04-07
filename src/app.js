@@ -24,7 +24,8 @@ app.post("/sign-up", (request, response) => {
   const { username, avatar } = request.body;
 
   if (!username || !avatar) {
-    return response.status(422).send("Todos os campos são obrigatórios!");
+    response.status(422).send("Todos os campos são obrigatórios!");
+    return
   }
 
   const newUser = { username, avatar };
@@ -40,11 +41,13 @@ app.post("/tweets", (request, response) => {
   const findUsername = profile.find((name) => name.username === user || name.username === username);
 
   if (!findUsername) {
-    return response.status(401).send("UNAUTHORIZED");
+    response.status(401).send("UNAUTHORIZED");
+    return
   }
 
   if (!username || !tweet) {
-    return response.status(422).send("Todos os campos são obrigatórios");
+    response.status(422).send("Todos os campos são obrigatórios");
+    return
   }
 
   const newTweet = { username, tweet };
@@ -58,7 +61,8 @@ app.get("/tweets", (request, response) => {
   const pageSize = 10;
 
   if (page && page < 1) {
-    return response.status(400).send("Informe uma página válida!");
+    response.status(400).send("Informe uma página válida!");
+    return
   }
 
   const startIndex = page ? (page - 1) * pageSize : 0;
