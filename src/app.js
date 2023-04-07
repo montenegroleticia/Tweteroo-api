@@ -37,7 +37,7 @@ app.post("/tweets", (request, response) => {
   const { user } = request.headers;
   const { username, tweet } = request.body;
 
-  const findUsername = profile.find((name) => name.username === user);
+  const findUsername = profile.find((name) => name.username === user || name.username === username);
 
   if (!findUsername) {
     return response.status(401).send("UNAUTHORIZED");
