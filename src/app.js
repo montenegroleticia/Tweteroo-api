@@ -64,9 +64,9 @@ app.get("/tweets", (request, response) => {
   const startIndex = page ? (page - 1) * pageSize : 0;
   const endIndex = startIndex + pageSize;
 
-  const lastTenTweets = tweets.slice(startIndex, endIndex).reverse();
+  const withTen = tweets.slice(startIndex, endIndex).reverse();
 
-  const tweetsWithAvatars = lastTenTweets.map((t) => {
+  const tweetsWithAvatars = withTen.map((t) => {
     const { username, tweet } = t;
 
     const findAvatar = profile.find((a) => a.username === t.username);
