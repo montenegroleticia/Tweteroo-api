@@ -36,11 +36,9 @@ app.post("/sign-up", (request, response) => {
 
 app.post("/tweets", (request, response) => {
   const { user } = request.headers;
-  const { username, tweet } = request.body;
+  const { tweet } = request.body;
 
-  const findUsername = profile.find(
-    (name) => name.username === user || name.username === username
-  );
+  const findUsername = profile.find((name) => name.username === user);
 
   if (!findUsername) {
     response.status(401).send("UNAUTHORIZED");
@@ -52,7 +50,7 @@ app.post("/tweets", (request, response) => {
     return;
   }
 
-  const newTweet = { username, tweet };
+  const newTweet = { user, tweet };
 
   tweets.push(newTweet);
   response.status(201).send("OK");
