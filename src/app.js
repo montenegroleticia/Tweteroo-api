@@ -6,7 +6,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const user = [
+const profile = [
   {
     username: "bobesponja",
     avatar:
@@ -29,14 +29,15 @@ app.post("/sign-up", (request, response) => {
 
   const newUser = { username, avatar };
 
-  user.push(newUser);
+  profile.push(newUser);
   response.status(201).send("OK");
 });
 
 app.post("/tweets", (request, response) => {
+  const { user } = request.headers;
   const { username, tweet } = request.body;
 
-  const findUsername = user.find((name) => name.username === username);
+  const findUsername = profile.find((name) => name.username === user);
 
   if (!findUsername) {
     return response.status(401).send("UNAUTHORIZED");
@@ -53,18 +54,12 @@ app.post("/tweets", (request, response) => {
 });
 
 app.get("/tweets", (request, response) => {
-  const page = request.query;
-
-  if (page && page < 1) {
-    return response.status(400).send("Informe uma página válida!");
-  }
-
   const lastTenTweets = tweets.slice(-10).reverse();
 
   const tweetsWithAvatars = lastTenTweets.map((t) => {
     const { username, tweet } = t;
 
-    const findAvatar = user.find((a) => a.username === t.username);
+    const findAvatar = profile.find((a) => a.username === t.username);
     const avatar = findAvatar ? findAvatar.avatar : null;
 
     return { username, avatar, tweet };
@@ -81,7 +76,7 @@ app.get("/tweets/:username", (request, response) => {
   const tweetsWithAvatars = userTweets.map((t) => {
     const { username, tweet } = t;
 
-    const findAvatar = user.find((a) => a.username === t.username);
+    const findAvatar = profile.find((a) => a.username === t.username);
     const avatar = findAvatar ? findAvatar.avatar : null;
     return { username, avatar, tweet };
   });
