@@ -18,9 +18,14 @@ const tweets = [];
 app.post("/sign-up", (request, response) => {
   const { username, avatar } = request.body;
 
-  if (typeof username != 'string' || typeof avatar != 'string' || !username || !avatar) {
+  if (
+    typeof username != "string" ||
+    typeof avatar != "string" ||
+    !username ||
+    !avatar
+  ) {
     response.status(422).send("Todos os campos são obrigatórios!");
-    return
+    return;
   }
 
   const newUser = { username, avatar };
@@ -33,16 +38,23 @@ app.post("/tweets", (request, response) => {
   const { user } = request.headers;
   const { username, tweet } = request.body;
 
-  const findUsername = profile.find((name) => name.username === user || name.username === username);
+  const findUsername = profile.find(
+    (name) => name.username === user || name.username === username
+  );
 
   if (!findUsername) {
     response.status(401).send("UNAUTHORIZED");
-    return
+    return;
   }
 
-  if (typeof username != 'string' || typeof tweet != 'string' || !username || !tweet) {
+  if (
+    typeof username != "string" ||
+    typeof tweet != "string" ||
+    !username ||
+    !tweet
+  ) {
     response.status(422).send("Todos os campos são obrigatórios");
-    return
+    return;
   }
 
   const newTweet = { username, tweet };
@@ -57,7 +69,7 @@ app.get("/tweets", (request, response) => {
 
   if (page && page < 1) {
     response.status(400).send("Informe uma página válida!");
-    return
+    return;
   }
 
   const startIndex = page ? (page - 1) * pageSize : 0;
