@@ -47,12 +47,7 @@ app.post("/tweets", (request, response) => {
     return;
   }
 
-  if (
-    typeof username != "string" ||
-    typeof tweet != "string" ||
-    !username ||
-    !tweet
-  ) {
+  if (typeof tweet != "string" || !tweet) {
     response.status(400).send("Todos os campos são obrigatórios");
     return;
   }
